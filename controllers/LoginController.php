@@ -21,7 +21,9 @@ Class LoginController {
         echo "Recuperar";
     }
 
-    public static function crear_cuenta(){
-        echo "Crear cuenta";
+    public static function crear_cuenta(Router $router){
+
+        $hola = 'Hola Papus';
+        $router->render('auth/crear-cuenta', compact('hola'));
     }
 }
