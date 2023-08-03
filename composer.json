@@ -1,0 +1,19 @@
+{
+    "name": "ivanm/app-salon",
+    "description": "Proyecto PHP8, SQL, MVC, SASS",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "MVC\\" : "./",
+            "Controllers\\" : "./controllers",
+            "Model\\" : "./models"
+        }
+    },
+    "authors": [
+        {
+            "name": "ivanmelo47",
+            "email": "ivanmelo47@gmail.com"
+        }
+    ],
+    "require": {}
+}
