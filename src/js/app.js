@@ -17,25 +17,84 @@ numerosInputs.forEach((telefonoInput) => {
 });
 /* Fin: Script para solo aceptar numero en un input */
 
-/* --> Inicio: Script para solo aceptar telefonos en un input */
+/* --> Inicio: Script para solo aceptar telefonos en un input ---------------- */
+function formatPhoneNumber(input) {
+  let phoneNumber = input.value.replace(/\D/g, ""); // Eliminamos caracteres no numéricos
 
-/* Fin: Script para solo aceptar telefonos en un input */
+  // Si el número tiene menos de 4 dígitos, no aplicamos formato
+  if (phoneNumber.length < 4) {
+    input.value = phoneNumber;
+  } else {
+    // Aplicamos el formato (XXX) XXX XXXX
+    let formattedNumber = `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(
+      3,
+      6
+    )} ${phoneNumber.slice(6)}`;
+    input.value = formattedNumber.trim();
+  }
+}
 
-/* --> Inicio: Script para solo aceptar letras y espacios en un input */
-// Obtener todos los inputs con la clase 'nombre'
-const nombresInputs = document.querySelectorAll(".solo-letras");
+window.onload = function () {
+  // Seleccionar todos los elementos con la clase "solo-telefono"
+  let phoneInputs = document.querySelectorAll(".solo-telefono");
 
-// Agregar un evento de escucha al evento 'input' para cada input con la clase 'nombre'
-nombresInputs.forEach((nombreInput) => {
-  nombreInput.addEventListener("input", function (event) {
-    // Obtener el valor actual del input
-    const valor = event.target.value;
+  // Agregar el evento input a cada input con la clase "solo-telefono"
+  phoneInputs.forEach((input) => {
+    input.addEventListener("input", function () {
+      formatPhoneNumber(this);
+    });
 
-    // Remover cualquier caracter que no sea una letra o espacio utilizando una expresión regular
-    const soloLetrasYEspacios = valor.replace(/[^A-Za-z\s]/g, "");
+    input.addEventListener("keydown", function (event) {
+      // Permite borrar el número si el usuario presiona la tecla "Backspace" o "Delete"
+      if (event.key === "Backspace" || event.key === "Delete") {
+        return;
+      }
 
-    // Actualizar el valor del input con solo letras y espacios
-    event.target.value = soloLetrasYEspacios;
+      // Verifica si el número está siendo editado en medio del campo
+      if (
+        input.selectionStart !== input.selectionEnd ||
+        input.selectionStart < 4
+      ) {
+        // Si el usuario está editando en medio del campo o antes del primer paréntesis,
+        // permitimos la escritura normalmente
+        return;
+      } else if (input.selectionStart === 3 || input.selectionStart === 7) {
+        // Si el usuario edita justo después de cada espacio, adelantamos el cursor en un espacio
+        input.setSelectionRange(
+          input.selectionStart + 1,
+          input.selectionStart + 1
+        );
+      }
+    });
   });
+};
+/* Fin: Script para solo aceptar telefonos en un input ----------------------- */
+
+/* --> Inicio: Script para solo aceptar nombre(s) en un input ---------------- */
+// Obtener todos los elementos con la clase 'custom-input'
+const inputElements = document.querySelectorAll(".solo-nombre");
+
+// Función para aplicar las restricciones y cambios al valor del input
+function handleInput(event) {
+  let inputValue = event.target.value;
+
+  // 1. Solo aceptar letras (eliminar números y símbolos especiales)
+  const lettersOnly = inputValue.replace(/[^A-Za-z\s]/g, "");
+
+  // 2. No permitir más de un espacio entre palabras y no permitir espacios al principio
+  const singleSpace = lettersOnly.replace(/^\s+|\s+(?=\s)/g, "");
+
+  // 3. Convertir la primera letra de cada palabra en mayúscula y las demás en minúscula
+  const titleCase = singleSpace
+    .toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+
+  // Actualizar el valor del input con los cambios realizados
+  event.target.value = titleCase;
+}
+
+// Agregar el evento de escucha a cada elemento con la clase 'custom-input'
+inputElements.forEach((inputElement) => {
+  inputElement.addEventListener("input", handleInput);
 });
-/* Fin: Script para solo aceptar letras y espacios en un input */
+/* --> Fin: Script para solo aceptar nombre(s) en un input ---------------- */

@@ -10,13 +10,13 @@
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" 
                name="nombre" placeholder="Tu Nombre" 
-               class="solo-letras" value="<?php echo s($usuario->nombre) ?>"/>
+               class="solo-nombre" value="<?php echo s($usuario->nombre) ?>"/>
     </div>
     <div class="campo">
         <label for="apellido">Apellido:</label>
         <input type="text" id="apellido" 
                name="apellido" placeholder="Tu Apellido"
-               class="solo-letras" value="<?php echo s($usuario->apellido) ?>"/>
+               class="solo-nombre" value="<?php echo s($usuario->apellido) ?>"/>
     </div>
     <div class="campo">
         <label for="telefono">Telefono:</label>

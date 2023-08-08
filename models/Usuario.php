@@ -35,12 +35,26 @@ class Usuario extends ActiveRecord
     {
         if (!($this->nombre)) {
             self::$alertas['error'][] = 'El Nombre del cliente es obligatorio';
+        }else {
+            $pattern = '/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$/u';
+            if (!preg_match($pattern, $this->nombre)) {
+                self::$alertas['error'][] = 'El Nombre del cliente tiene un formato no valido';
+            } 
         }
+
         if (!($this->apellido)) {
             self::$alertas['error'][] = 'El Apellido del cliente es obligatorio';
+        }else {
+            $pattern = '/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$/u';
+            if (!preg_match($pattern, $this->apellido)) {
+                self::$alertas['error'][] = 'El Apellido del cliente tiene un formato no valido';
+            } 
         }
+
         if (!($this->telefono)) {
-            self::$alertas['error'][] = 'El Telefono del cliente es obligatorio';
+            self::$alertas['error'][] = 'El Teléfono del cliente es obligatorio';
+        } elseif (!preg_match('/^\(\d{3}\)\s?\d{3}\s?\d{4,}$/', preg_replace('/\s/', '', $this->telefono))) {
+            self::$alertas['error'][] = 'El Teléfono del cliente no tiene un formato válido.';
         }
 
         if (!($this->email)) {
