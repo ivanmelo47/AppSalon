@@ -15,14 +15,14 @@ class LoginController
         }
 
         // Si el usuario ya está autenticado, redirigir a la página correspondiente
-        if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
+        /* if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
             if ($_SESSION['rol'] === "admin") {
                 header('Location: /admin');
             } elseif ($_SESSION['rol'] === "cliente") {
                 header('Location: /cliente');
             }
             exit();
-        }
+        } */
 
         $alertas = [];
         $auth = new Usuario();
@@ -65,19 +65,51 @@ class LoginController
 
     public static function olvide(Router $router)
     {
+        $alertas = [];
 
-        $hola = 'Hola Papus';
-        $router->render(
-            'auth/olvide-password',
-            compact(
-                'hola'
-            )
-        );
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $auth = new Usuario($_POST);
+            $alertas = $auth->validarEmail();
+
+            if (empty($alertas)) {
+                $usuario = Usuario::where('email', $auth->email);
+
+                // Validar que el usuario exista y este confrimado
+                if ($usuario && $usuario->confirmado === "1") {
+                    //Generar Token único
+                    $usuario->crearToken();
+
+                    // Enviar el email
+                    $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
+                    $email->enviarInstrucciones();
+
+                    // Guardar nuevo token en BD
+                    $usuario->guardar();
+
+                    // Alerta de exito
+                    Usuario::setAlerta('exito', 'Las instrucciones para recuperar tu cuenta han sido enviadas a tu email.');
+                } else {
+                    Usuario::setAlerta('error', 'El Usuario no existe o no ha sido confirmado.');
+                }
+            }
+        }
+
+        $alertas = Usuario::getAlertas();
+
+        $router->render('auth/olvide-password', [
+            'alertas' => $alertas,
+        ]);
     }
 
-    public static function recuperar()
+    public static function recuperar_cuenta(Router $router)
     {
-        echo "Recuperar";
+        $alertas = [];
+
+        $alertas = Usuario::getAlertas();
+
+        $router->render('auth/recuperar_cuenta', [
+            'alertas' => $alertas,
+        ]);
     }
 
     public static function crear_cuenta(Router $router)
