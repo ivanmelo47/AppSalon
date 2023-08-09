@@ -162,3 +162,69 @@ class LoginController
         ]);
     }
 }
+
+/* public static function login(Router $router)
+    {
+        session_start();
+        if (isset($_SESSION['login'])) { // Uso de 'isset' para saber si existe la variable de [login] en la supervariable de $_SESSION
+            if ($_SESSION['login'] === true) {
+                debuguear($_SESSION);
+                if ($_SESSION['rol'] === "admin") {
+                    header('Location: /admin');
+                } elseif ($_SESSION['rol'] === "cliente") {
+                    header('Location: /cliente');
+                }
+            }
+        }
+        
+        $alertas = [];
+
+        $auth = new Usuario();
+
+        // Verifica si existe una respuesta 'SUBMIT' desde el formulario de login
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $auth = new Usuario($_POST);
+
+            // Valida que todos los campos del formulario de login hayan sido llenados
+            $alertas = $auth->validarLogin();
+
+            // Valida que no haya ninguna alerta
+            if (empty($alertas)) {
+                //Comprabar que exista el usuario
+                $usuario = Usuario::where('email', $auth->email);
+                if ($usuario) {
+                    //Comprobar el password sea correcto y la cuenta este confirmada
+                    if ($usuario->comprobarPasswordAndVerificado($auth->password)) {
+                        // Autenticar el usuario
+
+                        session_start();
+                        $_SESSION['id'] = $usuario->id;
+                        $_SESSION['nombre'] = $usuario->nombre . ' ' . $usuario->apellido;
+                        $_SESSION['email'] = $usuario->email;
+                        $_SESSION['login'] = true;
+                        if ($usuario->admin === "1") {
+                            $_SESSION['rol'] = "admin";
+                        }else {
+                            $_SESSION['rol'] = "cliente";
+                        }
+
+                        // Redireccionamiento
+                        if ($_SESSION['rol'] === "admin") {
+                            header('Location: /admin');
+                        } elseif ($_SESSION['rol'] === "cliente") {
+                            header('Location: /cita');
+                        }
+                    }
+                } else {
+                    Usuario::setAlerta('error', 'Usuario no encontrado');
+                }
+            }
+        }
+
+        $alertas = Usuario::getAlertas();
+
+        $router->render('auth/login', [
+            'alertas' => $alertas,
+            'auth' => $auth,
+        ]);
+    } */
