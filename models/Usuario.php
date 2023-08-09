@@ -89,12 +89,32 @@ class Usuario extends ActiveRecord
         return $resultado;
     }
 
+    public function validarLogin(){
+        if (!$this->email) {
+            self::$alertas['error'][] = 'El Email del cliente es obligatorio';
+        }
+        if (!$this->password) {
+            self::$alertas['error'][] = 'El Password del cliente es obligatorio';
+        }
+        return self::$alertas;
+    }
+
     public function hashPassword(){
         $this->password = password_hash($this->password, PASSWORD_BCRYPT);
     }
 
     public function crearToken(){
         $this->token = uniqid();
+    }
+
+    public function comprobarPasswordAndVerificado($password){
+        $resultado = password_verify($password, $this->password);
+
+        if (!$resultado || !$this->confirmado) {
+            self::$alertas['error'][] = "Contraseña incorrecta o tu cuenta no a sido confirmada";
+        }else {
+            return true;
+        }
     }
 
 }
