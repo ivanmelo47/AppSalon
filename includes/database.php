@@ -1,6 +1,6 @@
 <?php
 
-$db = mysqli_connect('localhost', 'root', '', '');
+$db = mysqli_connect('localhost', 'laravel', '140735', 'appsalon');
 
 
 if (!$db) {
