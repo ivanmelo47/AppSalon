@@ -16,8 +16,12 @@
             <?php echo $contenido; ?>
         </div>
     </div>
+
+    <?php
+        echo $script ?? '';
+    ?>
     
-<script src="build/js/app.js"></script>
+<!-- <script src="build/js/app.js"></script> -->
 </body>
 
 </html>

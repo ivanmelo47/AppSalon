@@ -43,3 +43,9 @@
     <a href="/">Ya tienes una cuenta? Inicia sesión</a>
     <a href="/olvide">Olvidaste tu password?</a>
 </div>
+
+<?php
+    $script = "
+        <script src='build/js/app.js'></script>
+    ";
+?>
