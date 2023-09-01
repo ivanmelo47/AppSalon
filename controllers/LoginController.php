@@ -15,14 +15,14 @@ class LoginController
         }
 
         // Si el usuario ya está autenticado, redirigir a la página correspondiente
-        /* if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
+        if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
             if ($_SESSION['rol'] === "admin") {
                 header('Location: /admin');
             } elseif ($_SESSION['rol'] === "cliente") {
-                header('Location: /cliente');
+                header('Location: /cita');
             }
             exit();
-        } */
+        }
 
         $alertas = [];
         $auth = new Usuario();
@@ -34,20 +34,23 @@ class LoginController
             if (empty($alertas)) {
                 $usuario = Usuario::where('email', $auth->email);
 
-                if ($usuario && $usuario->comprobarPasswordAndVerificado($auth->password)) {
-                    // Autenticar el usuario
-                    $_SESSION['id'] = $usuario->id;
-                    $_SESSION['nombre'] = $usuario->nombre . ' ' . $usuario->apellido;
-                    $_SESSION['email'] = $usuario->email;
-                    $_SESSION['login'] = true;
-                    $_SESSION['rol'] = ($usuario->admin === "1") ? "admin" : "cliente";
-
-                    // Redireccionar al rol correspondiente
-                    header('Location: ' . ($_SESSION['rol'] === "admin" ? '/admin' : '/cita'));
-                    exit();
-                } else {
-                    Usuario::setAlerta('error', 'Credenciales incorrectas o cuenta no verificada.');
+                if ($usuario) {
+                    if ($usuario->comprobarPasswordAndVerificado($auth->password)) {
+                        // Autenticar el usuario
+                        $_SESSION['id'] = $usuario->id;
+                        $_SESSION['nombre'] = $usuario->nombre . ' ' . $usuario->apellido;
+                        $_SESSION['email'] = $usuario->email;
+                        $_SESSION['login'] = true;
+                        $_SESSION['rol'] = ($usuario->admin === "1") ? "admin" : "cliente";
+    
+                        // Redireccionar al rol correspondiente
+                        header('Location: ' . ($_SESSION['rol'] === "admin" ? '/admin' : '/cita'));
+                        exit();
+                    }
+                }else {
+                    Usuario::setAlerta('error', 'No existe ninguna cuenta registrada con este Email');
                 }
+
             }
         }
 
@@ -60,7 +63,11 @@ class LoginController
     }
     public static function logout()
     {
-        echo "Cerrar sesión";
+        session_start();
+
+        $_SESSION = [];
+
+        header('Location: /');
     }
 
     public static function olvide(Router $router)

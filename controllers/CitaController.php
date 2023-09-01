@@ -11,9 +11,12 @@ class CitaController
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
+
+        isAuth();
         
         $router->render('cita/index', [
-            'nombre' => $_SESSION['nombre']
+            'nombre' => $_SESSION['nombre'],
+            'idUsuario' => $_SESSION['id']
         ]);
     }
 }
