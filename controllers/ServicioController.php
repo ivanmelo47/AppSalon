@@ -2,9 +2,86 @@
 namespace Controllers;
 
 use Classes\Email;
+use Model\Servicio;
 use Model\Usuario;
 use MVC\Router;
 
 class ServicioController {
-    
+    public static function index(Router $router) {
+        session_start();
+
+        isAdmin();
+
+        $servicios = Servicio::all();
+
+        $router->render('servicios/index', [
+            'nombre' => $_SESSION['nombre'],
+            'servicios' => $servicios
+        ]);
+    }
+    public static function crear_servicio(Router $router) {
+        session_start();
+
+        isAdmin();
+
+        $servicio = new Servicio;
+        $alertas = [];
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $servicio->sincronizar($_POST);
+            $alertas = $servicio->validar();
+
+            if (empty($alertas)) {
+                $servicio->guardar();
+                header('Location: /servicios');
+            }
+        }
+        //debuguear($alertas);
+        $router->render('servicios/crear', [
+            'nombre' => $_SESSION['nombre'],
+            'servicio' => $servicio,
+            'alertas' => $alertas
+        ]);
+
+        
+    }
+    public static function actualizar_servicio(Router $router) {
+        session_start();
+
+        isAdmin();
+
+        if (!is_numeric($_GET['id'])) header('Location: /servicios');
+
+        $servicio = Servicio::find($_GET['id']);
+        $alertas = [];
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $servicio->sincronizar($_POST);
+
+            $alertas = $servicio->validar();
+
+            if (empty($alertas)) {
+                $servicio->guardar();
+                header('Location: /servicios');
+            }
+        }
+
+        $router->render('servicios/actualizar', [
+            'nombre' => $_SESSION['nombre'],
+            'servicio' => $servicio,
+            'alertas' => $alertas
+        ]);
+    }
+    public static function eliminar_servicio(Router $router) {
+        session_start();
+
+        isAdmin();
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $id = $_POST['id'];
+            $servicio = Servicio::find($id);
+            $servicio->eliminar();
+            header('Location: /servicios');
+        }
+    }
 }

@@ -25,11 +25,11 @@ class Email
         // create a new object
         $mail = new PHPMailer();
         $mail->isSMTP();
-        $mail->Host = 'sandbox.smtp.mailtrap.io';
+        $mail->Host = $_ENV['EMAIL_HOST'];
         $mail->SMTPAuth = true;
-        $mail->Port = 2525;
-        $mail->Username = 'd157b6f1596f59';
-        $mail->Password = 'a987d967babf16';
+        $mail->Port = $_ENV['EMAIL_PORT'];
+        $mail->Username = $_ENV['EMAIL_USER'];
+        $mail->Password = $_ENV['EMAIL_PASS'];
 
         $mail->setFrom('josue@appsalon.com');
         $mail->addAddress('josue@appsalon.com', 'AppSalon.com');
@@ -66,7 +66,7 @@ class Email
         $contenido .= '<h1 class="animated-greeting">¡Hola ' . $this->nombre . '! ✌️😎</h1>';
         $contenido .= '<p><strong>¡Bienvenido a App Salón!</strong></p>';
         $contenido .= '<p>Has creado tu cuenta en App Salón. Solo debes confirmarla presionando el siguiente botón:</p>';
-        $contenido .= '<a class="button" href="http://'.$this->host.'/confirmar-cuenta?token=' . $this->token . '">Confirmar Cuenta</a>';
+        $contenido .= '<a class="button" href="'.$_ENV['APP_URL'].'/confirmar-cuenta?token=' . $this->token . '">Confirmar Cuenta</a>';
         $contenido .= '<p>Si tú no solicitaste esta cuenta, puedes ignorar este mensaje.</p>';
         $contenido .= '<p style="font-size: 14px; color: #444; margin-top: 20px;">Si no puedes ver correctamente este correo, puedes acceder al siguiente enlace para confirmar tu cuenta: <a href="http://'.$this->host.'/confirmar-cuenta?token=' . $this->token . '">Confirmar Cuenta</a></p>';
         $contenido .= '</div>';
@@ -86,11 +86,11 @@ class Email
         // create a new object
         $mail = new PHPMailer();
         $mail->isSMTP();
-        $mail->Host = 'sandbox.smtp.mailtrap.io';
+        $mail->Host = $_ENV['EMAIL_HOST'];
         $mail->SMTPAuth = true;
-        $mail->Port = 2525;
-        $mail->Username = 'd157b6f1596f59';
-        $mail->Password = 'a987d967babf16';
+        $mail->Port = $_ENV['EMAIL_PORT'];
+        $mail->Username = $_ENV['EMAIL_USER'];
+        $mail->Password = $_ENV['EMAIL_PASS'];
 
         $mail->setFrom('josue@appsalon.com');
         $mail->addAddress('josue@appsalon.com', 'AppSalon.com');
@@ -126,7 +126,7 @@ class Email
         $contenido .= '<div class="container">';
         $contenido .= '<p><strong>Hola ' . $this->nombre . '! ✌️😎</strong></p>';
         $contenido .= '<p>Has solicitado reestablecer tu contraseña. Sigue el siguiente enlace para hacerlo:</p>';
-        $contenido .= '<a class="button" href="http://'.$this->host.'/recuperar-cuenta?token=' . $this->token . '">Reestablecer Contraseña</a>';
+        $contenido .= '<a class="button" href="'.$_ENV['APP_URL'].'/recuperar-cuenta?token=' . $this->token . '">Reestablecer Contraseña</a>';
         $contenido .= '<p>Si no solicitaste este cambio, puedes ignorar este mensaje.</p>';
         $contenido .= '<p style="font-size: 14px; color: #444; margin-top: 20px;">Si no puedes ver correctamente este correo, puedes acceder al siguiente enlace para recuperar tu cuenta: <a href="http://'.$this->host.'/recuperar-cuenta?token=' . $this->token . '">Recuperar Cuenta</a></p>';
         $contenido .= '</div>';

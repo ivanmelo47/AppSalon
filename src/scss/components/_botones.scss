@@ -9,4 +9,5 @@
     @include m.boton(v.$rojo, v.$blanco);
     margin-bottom: 2rem;
     margin-top: 3rem;
+    cursor: pointer;
 }

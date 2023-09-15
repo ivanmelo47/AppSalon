@@ -1,12 +1,14 @@
 @use 'base/variables' as v;
+@use "base/mixins" as m;
 
 .citas {
     list-style: none;
     padding: 0;
 
-    li{
+    li {
         padding: 1rem;
         border-top: 1px solid v.$blanco;
+
         p {
             font-weight: v.$bold;
             color: v.$azul;
@@ -16,6 +18,23 @@
         .servicio {
             font-weight: v.$regular;
             color: v.$blanco;
+        }
+    }
+}
+
+.servicios {
+    @extend .citas;
+
+    .acciones {
+        margin: 0;
+    }
+
+    .boton:first-child,
+    .boton-eliminar {
+        margin-bottom: .1rem;
+
+        @include m.tablet {
+            margin: 0;
         }
     }
 }

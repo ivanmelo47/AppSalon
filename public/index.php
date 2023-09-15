@@ -37,6 +37,10 @@ $router->get('/admin', [AdminController::class, 'index']);
 /* CRUD de Servicios */
 $router->get('/servicios', [ServicioController::class, 'index']);
 $router->get('/servicios/crear', [ServicioController::class, 'crear_servicio']);
+$router->post('/servicios/crear', [ServicioController::class, 'crear_servicio']);
+$router->get('/servicios/actualizar', [ServicioController::class, 'actualizar_servicio']);
+$router->post('/servicios/actualizar', [ServicioController::class, 'actualizar_servicio']);
+$router->post('/servicios/eliminar', [ServicioController::class, 'eliminar_servicio']);
 
 /* API de Citas */
 $router->get('/api/servicios', [APIController::class, 'index']);
